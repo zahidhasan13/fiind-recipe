@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 
 const Recipes = ({ recipe }) => {
-  console.log(recipe);
   return (
     <div className="card bg-white/70 rounded-md overflow-hidden hover:shadow-md">
       <img
@@ -16,7 +15,7 @@ const Recipes = ({ recipe }) => {
         <h2 className="text-2xl font-semibold text-gray-600 truncate my-5">
           {recipe.title}
         </h2>
-        <Link to="/">
+        <Link to={`/recipe-item/${recipe.id}`}>
           <button className="bg-gradient-to-t from-rose-500 to-rose-600 px-3 py-1 text-white font-semibold rounded-md hover:from-rose-600 hover:to-rose-500 duration-300">
             View Recipe
           </button>
