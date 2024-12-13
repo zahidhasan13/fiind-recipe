@@ -1,14 +1,14 @@
 import { useContext, useEffect, useState } from "react";
+import { GiKnifeFork } from "react-icons/gi";
+import { IoMdCheckmark } from "react-icons/io";
 import { Link, useParams } from "react-router-dom";
 import { RecipeContext } from "../context/RecipeProvide";
-import { IoMdCheckmark } from "react-icons/io";
-import { GiKnifeFork } from "react-icons/gi";
+import SingleRecipe from "../components/SingleRecipe";
 
 const RecipeItem = () => {
   const [recipe, setRecipe] = useState({});
   const { id } = useParams();
   const { loading, setLoading, error, setError } = useContext(RecipeContext);
-  console.log(recipe);
 
   useEffect(() => {
     const getRecipeItem = async () => {
@@ -29,18 +29,6 @@ const RecipeItem = () => {
 
     getRecipeItem();
   }, []);
-
-  // Duration calcutation
-  const durationCalc = (duration) => {
-    if (!duration) return;
-
-    if (!String(duration).includes(".")) {
-      return String(duration) + "h";
-    }
-    if (String(duration).includes(".")) {
-      return String(duration).replace(".", "h") + "min";
-    }
-  };
 
   return (
     <div className="container mx-auto py-10 min-h-screen">
@@ -77,72 +65,7 @@ const RecipeItem = () => {
           )}
         </div>
       )}
-      {recipe?.title && (
-        <div className="flex flex-col lg:flex-row items-start gap-10">
-          <div className="w-1/2">
-            <div className="h-96 rounded-2xl overflow-hidden">
-              <img
-                src={recipe.image_url}
-                alt={recipe.title}
-                className="w-full object-cover hover:scale-110 duration-300"
-              />
-            </div>
-            <div className="mt-20">
-              <p className="text-4xl font-bold text-gray-600 flex items-center gap-3 mb-7">
-                <span className="text-rose-500">
-                  <GiKnifeFork />
-                </span>
-                Ingredients:
-              </p>
-              {recipe.ingredients.map((ing, i) => (
-                <li
-                  key={i}
-                  className="list-none mt-2 flex items-center gap-3 text-lg"
-                >
-                  <span>
-                    <IoMdCheckmark />
-                  </span>{" "}
-                  <span>
-                    {ing.quantity} {ing.unit} {ing.description}
-                  </span>
-                </li>
-              ))}
-            </div>
-          </div>
-          <div className="w-1/2">
-            <p className="font-bold text-sky-600">{recipe.publisher}</p>
-            <h2 className="text-3xl font-semibold text-gray-600 mt-2">
-              {recipe.title}
-            </h2>
-            <div className="flex items-center gap-5 mt-3 text-rose-600">
-              <span className="font-bold uppercase">
-                servings: {recipe.servings} people
-              </span>
-              <span className="font-bold uppercase">
-                cooking time:{" "}
-                {recipe.cooking_time < 60
-                  ? String(recipe.cooking_time) + "min"
-                  : durationCalc(recipe.cooking_time / 60)}
-              </span>
-            </div>
-            <div className="flex items-center gap-5 mt-10">
-              <button className="px-4 py-2 bg-gradient-to-t from-sky-400 to-sky-600 hover:to-sky-400 hover:from-sky-600 rounded-md text-white font-semibold uppercase">
-                + set as favorite
-              </button>
-              <Link to={recipe.source_url} target="_blank">
-                <button className="px-4 py-2 bg-gradient-to-t from-purple-400 to-purple-600 hover:to-purple-400 hover:from-purple-600 duration-300 rounded-md text-white font-semibold uppercase">
-                  get direction
-                </button>
-              </Link>
-              <Link to="/">
-                <button className="px-4 py-2 bg-gradient-to-t from-rose-400 to-rose-600 hover:to-rose-400 hover:from-rose-600 duration-300 rounded-md text-white font-semibold uppercase">
-                  go homepage
-                </button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      )}
+      {recipe?.title && <SingleRecipe recipe={recipe} />}
     </div>
   );
 };

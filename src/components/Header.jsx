@@ -1,9 +1,10 @@
 import { useContext, useRef } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { RecipeContext } from "../context/RecipeProvide";
 
 const Header = () => {
   const searchInput = useRef(null);
+  const navigate = useNavigate();
   const {
     searchQuery,
     setSearchQuery,
@@ -11,6 +12,7 @@ const Header = () => {
     setError,
     setLoading,
     setShowMore,
+    savedData,
   } = useContext(RecipeContext);
 
   const submitHandler = async (e) => {
@@ -19,6 +21,7 @@ const Header = () => {
     getData(searchQuery);
     setSearchQuery("");
     searchInput.current.blur();
+    navigate("/");
     setRecipes([]);
     setShowMore(12);
   };
@@ -59,7 +62,7 @@ const Header = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Find Recipe..."
-              className="lg:w-96 py-1 px-4 rounded-full shadow-md outline-none shadow-rose-400 focus:shadow-rose-500 duration-300"
+              className="lg:w-96 py-3 px-6 rounded-full shadow-sm outline-none focus:shadow-rose-500 duration-300"
             />
           </form>
           <ul className="links flex items-center gap-5">
@@ -70,7 +73,8 @@ const Header = () => {
             </li>
             <li className="text-gray-500 font-semibold">
               <NavLink to="/favourite" style={navLink}>
-                Favourite <span className="text-rose-700">(15)</span>
+                Favourite{" "}
+                <span className="text-rose-700">({savedData.length})</span>
               </NavLink>
             </li>
           </ul>

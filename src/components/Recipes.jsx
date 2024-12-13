@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 const Recipes = ({ recipe }) => {
   return (
-    <div className="card bg-white/70 rounded-md overflow-hidden hover:shadow-md">
+    <div className="card w-72 bg-white/70 rounded-md overflow-hidden hover:shadow-md">
       <img
         src={recipe.image_url}
         alt={recipe.title}
